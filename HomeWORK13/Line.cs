@@ -118,50 +118,28 @@ namespace Task1
                 return letters1[rnd.Next(0, letters1.Length)];
             }
         }
-        static void Main(string[] args)
+
+        class Program
         {
-            object lockConsole = new object();
-            byte[] buffer = new byte[Console.WindowWidth];
-            object lockLineLock = new object();
+            static void Main(string[] args)
+            {
+                Console.CursorVisible = false;
+                byte[] lockLine = new byte[Console.WindowWidth];
+                object lockConsole = new object();
+                var rnd = new Random();
+                object lockLineLock=new object();
 
-            Line line = new Line(6, 6, lockConsole, ref buffer, lockLineLock);
-            Line line2 = new Line(7, 12, lockConsole, ref buffer, lockLineLock);
-            Thread thread3 = new Thread(line.Draw);
-            Thread thread4 = new Thread(line2.Draw);
-            Thread.Sleep(1000);
-
-            thread3.Start();
-            Thread.Sleep(200);
-            thread4.Start();
-            //Random rnd2 = new Random();
-            //int num1 = rnd2.Next(1, 20);
-            //Line[] line3 = new Line[6];
-            //Thread[] threads = new Thread[line3.Length];
-
-
-
-            //for (int i = 0; i < 6; i++)
-            //{
-              
-            //       int row = i;
-                    
-            //        threads[i] = new Thread(() =>
-            //        {
-            //            line3[row] = new Line(num1+ i ,10, lockConsole, ref buffer, lockLineLock);
-                        
-            //        });
-            //        threads[i].Start();
-
-             
-
-            //}
-            //foreach (var thread in threads)
-            //{
-            //    thread.Join();
-            //    Console.Write("   ");
-            //}
-
-
+                while (true)
+                {
+                    Thread.Sleep(30);
+                    int i = rnd.Next(0, lockLine.Length);
+                    if (lockLine[i] == 1)
+                    {
+                        continue;
+                    }
+                    new Line(rnd.Next(4, 10), i, lockConsole, ref lockLine, lockLineLock);
+                }
+            }
         }
 
     }
